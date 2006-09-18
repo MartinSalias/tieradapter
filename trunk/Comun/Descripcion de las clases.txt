@@ -1,0 +1,72 @@
+Descripción general de las clases
+
+* Selector.scx
+No es una clase sino un form que muestra una lista de selección, y se lo llama:
+ do Selector with tcTitle, tcColumns, tcCaptions, tnOrder
+
+Donde los parámetros son el título del form, los campos a mostrar (sobre el área activa) como una string separada por comas, los títulos de cada columna en otra string separada por comas coincidente con la primera, y el número de columna por la que se ordena inicialmente (default la primera)
+
+
+* MenuLib.vcx - ignorar
+* msSplashScreen.vcx - ignorar
+
+* msBaseClass.vcx
+Subclases generales de las de VFP
+Tienen muy poca funcionalidad
+
+* msMainToolBar.vcx
+Es la barrita con Nuevo, Abrir, Guardar, Cerrar e Imprimir.
+Coordina con los forms en msActionform.
+
+* msActionForm.vcx
+Tiene el form y el grid funcionales que se usan en general, y es lo que describo más en detalle:
+
+msActionForm
+ Métodos
+
+  New, Open, Save, Close, toPrint
+  Coinciden con los botones de la Toolbar 
+  (toPrint se llama así para no colisionar con el método Print nativo)
+
+  New() llama a oUserTier.New() y activa el form en blanco.
+        En las instancias hay que inicializar los valores por default
+        de los campos después del doDefault()
+
+  Open() llama a oUserTier.GetAll() y arma un form Selector 
+         en base a las propiedades cSelectorFields/Headers.
+         Si se selecciona un registro, llama a oUserTier.GetOne()
+         y activa el form.
+
+  New() llama a oUserTier.Put() y desactiva el form.
+        En las instancias debería validarse todo antes del doDefault().
+
+  Close() Desactiva el form de una. Se podría mejorar para que 
+          si hay cambios en el buffer pregunte si los descarta.
+
+  toPrint() no está imlementado aún en ninguna instancia, pero
+            la idea sería que si nStatus es 0 emita un listado
+            de todos los registros, y si es 1 emita una ficha 
+            del registro activo.
+
+  EnableControls, SinchronizeToolbar, nStatus_Assing
+  Controlan la sincronización de la toolbar y el cambio de estado
+  entre espera/edición.
+
+ Propiedades
+
+  cUserTierClass, cUserTierClassLibrary, y oUserTier
+  Contienen la clase, prg ó vcx, y la referencia al objeto.
+
+  cSelectorFields, cSelectorHeaders
+  Contienen en strings separadas por comas los campos y sus títulos
+  que formarán la lista de selección al ejecutarse Open().
+  
+  nStatus
+  Indica el estado del form.
+   0 es Idle (todo desactivado y en la toolbar sólo nuevo y abrir)
+   1 es Edit (todo activado y en la toolbar sólo guardar y cerrar)
+  Todo esto lo controla sólo el formulario y la toolbar. 
+  En algún momento voy a ponerlas como hidden o protected, pero por
+  ahora me sirve tener todo visible para poder toquetear en las pruebas.
+
+Mecanismo

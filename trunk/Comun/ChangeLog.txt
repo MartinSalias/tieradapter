@@ -1,0 +1,48 @@
+Version 2.30 [RR - 2005-10-01]
+- DataTierAdapter: se mueve la propiedad cGetAllPaginatedOrderBy a la UserTier, por ser ahi donde
+  el usuario cambia su valor, y luego se baja como ultimo parametro de GetAllPaginated
+- Se agrega un 4to parametro (tcOrderBy) a GetAllPaginated en todas las capas
+- Se agrega clase taConnection
+- Se mejora el manejo de transacciones globales (Ver DataTier y BizTier)
+
+Version 2.22 [RR - 2005-06-16]
+- msApp class
+  Added SetManagers method to set special Manager objects
+  Added ReportManagerFactory method responsible for the Report Manager instantiation
+    Default ReportManager class is NativeReportManager
+  Added AbstractReportManager and NativeReportManager classes
+  Function PrintReport is replaced by oApp.oReportManager.Send(), but kept for backward compatibility
+
+
+Version 2.21 [RR - 2005-06-06]
+- rrCursorAdapter: Fix a problem with the property "UniqueTable" (ADO recordsets only)
+
+Version 2.2  [RR/MS - 2005-05-21]
+
+TierAdapter Class
+ - Added PostProcessEachCursor() abstract method
+   Called in GetData() before setting cursor buffering
+ - Added tlPostProcessEachCursor parameter to GetData()
+   Indicates wether it needs to Apply PostProcessing to every cursor
+
+UserTierAdapter Class
+ - Implemented TierAdapter::PostProcessEachCursor() method
+ - Added CreateIndexes abstract method
+
+msApp Class
+ - cAppLogo property removed (unused)
+ - Added properties to allow fixed menus customization
+   .cToolsMenu
+   .cDeveloperMenu
+   .cTrailerMenu
+
+AppLogo Class
+ - nPosition property added
+ - Default behavior changed: the logo image is not resized by default
+
+Default menus and other UI components translated to English
+
+Version 2.19 [RR - 2005-06-06]
+- Similar to Version 2.21 but modified to run under VFP8. This is the last version of TierAdapter
+  designed for VFP8. Future version will run only under VFP9.
+

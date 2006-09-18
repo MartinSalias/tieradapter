@@ -1,0 +1,1 @@
+Tomar en msAction la configuración regional de msApp (o de windows)
